@@ -26,6 +26,8 @@ jobs:
           push: false
           load: true
           tags: arch-test:latest
+          cache-from: type=gha
+          cache-to: type=gha
       - name: Test Makefile
         run: |
           docker run --rm -v $PWD:/home/testuser/app -w /home/testuser/app arch-test:latest make
