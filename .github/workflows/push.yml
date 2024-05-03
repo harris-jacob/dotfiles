@@ -11,22 +11,22 @@ jobs:
     - name: Test Makefile
       run: make
 
-  # build-arch:
-  #   runs-on: ubuntu-latest
-  #   setups:
-  #     - uses: actions/checkout@v2
-  #     - name: Setup docker buildx
-  #       uses: docker/setup-buildx-action@v1
+  build-arch:
+    runs-on: ubuntu-latest
+    setups:
+      - uses: actions/checkout@v2
+      - name: Setup docker buildx
+        uses: docker/setup-buildx-action@v1
 
-  #     - name: Build image
-  #       uses: docker/build-push-action@v2
-  #       with:
-  #         context: .
-  #         file: ./Dockerfile
-  #         push: false
-  #         tags: arch-test:latest
-  #     - name: Test Makefile
-  #       run: |
-  #         docker run --rm -v $PWD:/home/testuser/app -w /home/testuser/app arch-test:latest make
+      - name: Build image
+        uses: docker/build-push-action@v2
+        with:
+          context: .
+          file: ./Dockerfile
+          push: false
+          tags: arch-test:latest
+      - name: Test Makefile
+        run: |
+          docker run --rm -v $PWD:/home/testuser/app -w /home/testuser/app arch-test:latest make
             
 
