@@ -1,13 +1,13 @@
 SHELL := /bin/bash
 
 .DEFAULT_GOAL := all
-.PHONY: kitty zsh nvim
+.PHONY: kitty zsh nvim i3
 
 DOTFILES_DIR ?= $(HOME)/dev/dotfiles
 XDG_CONFIG_HOME ?= $(HOME)/.config
 PLATFORM ?= $(shell uname | tr '[:upper:]' '[:lower:]')
 
-all: homebrew stow zsh kitty nvim
+all: homebrew stow zsh kitty nvim i3
 
 stow: 
 	@echo "Installing stow..."
@@ -26,6 +26,7 @@ endif
 zsh: install-zsh configure-zsh ohmyzsh-install ohmyzsh-configure
 nvim: install-nvim nvim-deps configure-nvim
 kitty: install-kitty configure-kitty
+i3: install-i3 configure-i3
 
 configure-zsh:
 	@echo "Configuring zsh..."
@@ -35,7 +36,7 @@ install-zsh:
 ifeq ($(PLATFORM), linux)
 	@echo "Installing zsh..."
 	@sudo pacman -S zsh --noconfirm
-	@sudo usermod -s "$(type -P zsh)" "$(WHOAMI)"
+	@sudo usermod -s "$$(type -P zsh)" $$(whoami)
 endif
 
 ohmyzsh-install:
@@ -72,3 +73,16 @@ install-kitty:
 configure-kitty:
 	@echo "Configuring kitty..."
 	@stow kitty -t $(HOME)
+
+configure-i3:
+ifeq ($(PLATFORM), linux)
+	@echo "Configuring i3..."
+	@stow i3 -t $(HOME)
+endif
+
+install-i3:
+ifeq ($(PLATFORM), linux)
+	@echo "Installing i3 and deps..."
+	@./scripts/i3.sh
+endif
+
