@@ -24,6 +24,7 @@ jobs:
           context: .
           file: ./Dockerfile
           push: false
+          load: true
           tags: arch-test:latest
       - name: Test Makefile
         run: |
