@@ -7,7 +7,7 @@ DOTFILES_DIR ?= $(HOME)/dev/dotfiles
 XDG_CONFIG_HOME ?= $(HOME)/.config
 PLATFORM ?= $(shell uname | tr '[:upper:]' '[:lower:]')
 
-all: homebrew stow zsh kitty nvim i3
+all: homebrew pacman-sync git stow zsh kitty nvim i3
 
 stow: 
 	@echo "Installing stow..."
@@ -15,6 +15,20 @@ ifeq ($(PLATFORM), linux)
 	@sudo pacman -S stow --noconfirm
 else
 	@brew install stow
+endif
+
+git:
+	@echo "Installing git..."
+ifeq ($(PLATFORM), linux)
+	@sudo pacman -S git --noconfirm
+else
+	@brew install git
+endif
+
+pacman-sync:
+ifeq ($(PLATFORM), linux)
+	@echo "Syncing pacman..."
+	@sudo pacman -Syu --noconfirm
 endif
 
 homebrew:
