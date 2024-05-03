@@ -1,18 +1,16 @@
 # dotfiles
 Dotfiles for my various machines
 
-
-## Pre-requisites
-- [zsh](https://www.zsh.org/)
-- [Oh My Zsh](https://ohmyz.sh/)
-- [Powerlevel10k]()
-- [neovim](https://neovim.io/)
-- [ripgrep]()
-- [packer.nvim]()
-- [kitty]()
-- [stow]()
-
-
 ## Installation
+
+From `~/dev`:
+```bash
+git clone https://github.com/harris-jacob/dotfiles.git
+
+cd dotfiles
+
+make
+```
+
 
 
