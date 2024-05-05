@@ -16,6 +16,7 @@ WORKDIR /home/testuser/app
 
 # sync the package database so its not slow during test
 RUN sudo pacman -Syu --noconfirm
+RUN sudo pacman -S git make --noconfirm
 
 COPY . .
 

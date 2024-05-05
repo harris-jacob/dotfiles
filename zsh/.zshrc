@@ -78,6 +78,7 @@ ZSH_THEME="powerlevel10k/powerlevel10k"
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
 plugins=(
+    asdf
     git
     z
     aws
@@ -124,3 +125,4 @@ source $ZSH/oh-my-zsh.sh
 # shared aliases
 alias vi=nvim
 alias dots='vi ~/dev/dotfiles'
+alias cl=clear

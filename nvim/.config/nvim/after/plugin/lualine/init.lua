@@ -26,3 +26,5 @@ require('lualine').setup{
   }
 }
 }
+
+

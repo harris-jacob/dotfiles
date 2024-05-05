@@ -7,7 +7,7 @@ DOTFILES_DIR ?= $(HOME)/dev/dotfiles
 XDG_CONFIG_HOME ?= $(HOME)/.config
 PLATFORM ?= $(shell uname | tr '[:upper:]' '[:lower:]')
 
-all: homebrew pacman-sync git stow zsh kitty nvim i3
+all: homebrew deps stow zsh kitty nvim i3 languages
 
 stow: 
 	@echo "Installing stow..."
@@ -17,30 +17,27 @@ else
 	@brew install stow
 endif
 
-git:
-	@echo "Installing git..."
-ifeq ($(PLATFORM), linux)
-	@sudo pacman -S git --noconfirm
-else
-	@brew install git
-endif
-
-pacman-sync:
-ifeq ($(PLATFORM), linux)
-	@echo "Syncing pacman..."
-	@sudo pacman -Syu --noconfirm
-endif
-
 homebrew:
 ifeq ($(PLATFORM), darwin)
 	@echo "Installing Homebrew..."
 	@/bin/bash -c NON_INTERACTIVE=1 "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 endif
 
-zsh: install-zsh configure-zsh ohmyzsh-install ohmyzsh-configure
-nvim: install-nvim nvim-deps configure-nvim
+deps:
+ifeq ($(PLATFORM), darwin) 
+	@echo "Installing brew deps..."
+	@./scripts/brew-deps.sh
+else 
+	@echo "Installing arch deps..."
+	@sudo ./scripts/arch-deps.sh
+	@git config --global credential.helper /usr/lib/git-core/git-credential-libsecret
+endif
+
+zsh: install-zsh ohmyzsh-install ohmyzsh-configure configure-zsh
+nvim: install-nvim configure-nvim
 kitty: install-kitty configure-kitty
 i3: install-i3 configure-i3
+languages: languages-asdf languages-install
 
 configure-zsh:
 	@echo "Configuring zsh..."
@@ -54,8 +51,7 @@ ifeq ($(PLATFORM), linux)
 endif
 
 ohmyzsh-install:
-	@echo "Installing oh-my-zsh..."
-	@sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended
+	@./scripts/ohmyzsh.sh install
 
 ohmyzsh-configure:
 	@echo "Configuring oh-my-zsh..."
@@ -67,13 +63,6 @@ ifeq ($(PLATFORM), linux)
 	@sudo pacman -S neovim --noconfirm
 else
 	@brew install neovim
-endif
-
-nvim-deps:
-ifeq ($(PLATFORM), linux)
-	@sudo pacman -S ripgrep --noconfirm
-else
-	@brew install ripgrep
 endif
 
 configure-nvim:
@@ -100,3 +89,10 @@ ifeq ($(PLATFORM), linux)
 	@./scripts/i3.sh
 endif
 
+languages-asdf:
+	@echo "Installing asdf..."
+	@./scripts/languages.sh asdf
+
+languages-install:
+	@echo "Installing languages..."
+	@./scripts/languages.sh install
