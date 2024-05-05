@@ -1,6 +1,10 @@
 # dotfiles
 Dotfiles for my various machines
 
+## Prerequisites
+- git
+- make
+
 ## Installation
 
 From `~/dev`:
