@@ -18,4 +18,6 @@ pacman -S --noconfirm \
     libsecret \
     zip \
     unzip \
-    ttf-firacode-nerd
+    ttf-firacode-nerd \
+    fzf \
+    ripgrep

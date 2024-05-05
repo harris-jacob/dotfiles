@@ -125,3 +125,4 @@ source $ZSH/oh-my-zsh.sh
 # shared aliases
 alias vi=nvim
 alias dots='vi ~/dev/dotfiles'
+alias cl=clear

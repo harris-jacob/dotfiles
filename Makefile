@@ -34,7 +34,7 @@ else
 endif
 
 zsh: install-zsh ohmyzsh-install ohmyzsh-configure configure-zsh
-nvim: install-nvim nvim-deps configure-nvim
+nvim: install-nvim configure-nvim
 kitty: install-kitty configure-kitty
 i3: install-i3 configure-i3
 languages: languages-asdf languages-install
@@ -63,13 +63,6 @@ ifeq ($(PLATFORM), linux)
 	@sudo pacman -S neovim --noconfirm
 else
 	@brew install neovim
-endif
-
-nvim-deps:
-ifeq ($(PLATFORM), linux)
-	@sudo pacman -S ripgrep --noconfirm
-else
-	@brew install ripgrep
 endif
 
 configure-nvim:
