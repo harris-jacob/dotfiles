@@ -4,8 +4,8 @@ set -o errexit  # abort on nonzero exitstatus
 set -o nounset  # abort on unbound variable
 set -o pipefail # don't hide errors within pipes
 
+ZSH_ROOT="${HOME}/.oh-my-zsh"
 ZSH_CUSTOM="${HOME}/.oh-my-zsh/custom"
-DOTFILES="${HOME}/dev/dotfiles"
 
 declare -a ZSH_CUSTOM_PLUGINS=(
 	"themes/powerlevel10k=https://github.com/romkatv/powerlevel10k"
@@ -14,6 +14,16 @@ declare -a ZSH_CUSTOM_PLUGINS=(
 	"plugins/you-should-use=https://github.com/MichaelAquilina/zsh-you-should-use"
 	"plugins/fzf-tab=https://github.com/Aloxaf/fzf-tab"
 )
+
+function do_install() {
+    if [[ ! -d "${ZSH_ROOT}" ]]
+    then
+        sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended
+        rm ~/.zshrc
+    else
+        echo "Oh-my-zsh Already installed!"
+    fi
+}
 
 function do_configure() {
 	for value in "${ZSH_CUSTOM_PLUGINS[@]}"; do
@@ -37,6 +47,10 @@ function do_update_plugins() {
 function main() {
 	command=$1
 	case $command in
+	"install")
+		shift
+		do_install "$@"
+		;;
 	"configure")
 		shift
 		do_configure "$@"

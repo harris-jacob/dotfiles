@@ -37,7 +37,7 @@ ifeq ($(PLATFORM), darwin)
 	@/bin/bash -c NON_INTERACTIVE=1 "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 endif
 
-zsh: install-zsh configure-zsh ohmyzsh-install ohmyzsh-configure
+zsh: install-zsh ohmyzsh-install ohmyzsh-configure configure-zsh
 nvim: install-nvim nvim-deps configure-nvim
 kitty: install-kitty configure-kitty
 i3: install-i3 configure-i3
@@ -54,8 +54,7 @@ ifeq ($(PLATFORM), linux)
 endif
 
 ohmyzsh-install:
-	@echo "Installing oh-my-zsh..."
-	@sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended
+	@./scripts/ohmyzsh.sh install
 
 ohmyzsh-configure:
 	@echo "Configuring oh-my-zsh..."

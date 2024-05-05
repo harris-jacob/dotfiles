@@ -23,12 +23,12 @@ require('mason-lspconfig').setup({
     -- Replace the language servers listed here
     -- with the ones you want to install
     ensure_installed = {
-        'tsserver',
-        'eslint',
-        'lua_ls',
-        'rust_analyzer',
-        'gopls',
-        'elixirls',
+        -- 'tsserver',
+        -- -- 'eslint',
+        -- 'lua_ls',
+        -- 'rust_analyzer',
+        -- -- 'gopls',
+        -- 'elixirls',
     },
     handlers = {
         function(server_name)
