@@ -7,6 +7,8 @@ set -o pipefail # don't hide errors within pipes
 sudo pacman -Syy
 
 sudo pacman -S --noconfirm \
+    xorg \
+    xorg-xinit \
     arandr \
     nitrogen \
     rofi \
@@ -20,4 +22,8 @@ sudo pacman -S --noconfirm \
     python-yaml \
     ttf-nerd-fonts-symbols \
     i3-wm \
-    picom
+    picom \
+    gnome-keyring \
+    libsecret
+
+git config --global credential.helper /usr/lib/git-core/git-credential-libsecret
