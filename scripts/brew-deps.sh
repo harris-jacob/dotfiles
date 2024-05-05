@@ -1,24 +1,7 @@
 #!/bin/bash
 
-fonts_list=(
-  font-fira-mono-nerd-font
-)
-
-plugin_list=(
-    ripgrep
-    fzf
-)
+set -o errexit
 
 brew tap homebrew/cask-fonts
-
-for font in "${fonts_list[@]}"
-do
-  brew install --cask "$font"
-done
-
-for plugin in "${plugin_list[@]}"
-do
-  brew install "$plugin"
-done
-
-exit
+brew install --cask font-fira-mono-nerd-font
+brew install ripgrep fzf
