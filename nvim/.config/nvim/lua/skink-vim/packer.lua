@@ -1,12 +1,12 @@
 local ensure_packer = function()
-  local fn = vim.fn
-  local install_path = fn.stdpath('data')..'/site/pack/packer/start/packer.nvim'
-  if fn.empty(fn.glob(install_path)) > 0 then
-    fn.system({'git', 'clone', '--depth', '1', 'https://github.com/wbthomason/packer.nvim', install_path})
-    vim.cmd [[packadd packer.nvim]]
-    return true
-  end
-  return false
+    local fn = vim.fn
+    local install_path = fn.stdpath('data') .. '/site/pack/packer/start/packer.nvim'
+    if fn.empty(fn.glob(install_path)) > 0 then
+        fn.system({ 'git', 'clone', '--depth', '1', 'https://github.com/wbthomason/packer.nvim', install_path })
+        vim.cmd [[packadd packer.nvim]]
+        return true
+    end
+    return false
 end
 
 local _ = ensure_packer()
@@ -92,7 +92,7 @@ return require('packer').startup(function(use)
         }
     }
 
-    -- Like make command but determins build system from file
+    -- Like make command but determines build system from file
     use {
         'neomake/neomake',
     }
@@ -116,15 +116,15 @@ return require('packer').startup(function(use)
     -- todos
     use { 'folke/todo-comments.nvim', requires = 'nvim-lua/plenary.nvim' }
 
-
-    -- blamer
-    use { 'APZelos/blamer.nvim' }
+    -- Git signs
+    use {
+        'lewis6991/gitsigns.nvim',
+        requires = { 'nvim-lua/plenary.nvim' },
+    }
 
 
     -- commentary operator
     use { 'tpope/vim-commentary' }
-
-
 
     -- debugger
     use 'mfussenegger/nvim-dap'
@@ -138,4 +138,10 @@ return require('packer').startup(function(use)
 
     -- Hard time
     use 'takac/vim-hardtime'
+
+    -- Extended omnisharp support
+    use "Hoffs/omnisharp-extended-lsp.nvim"
+
+    -- Startup time
+    use 'dstein64/vim-startuptime'
 end)

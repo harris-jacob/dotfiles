@@ -25,16 +25,19 @@ function add_plugins() {
     asdf plugin add nodejs https://github.com/asdf-vm/asdf-nodejs.git
     asdf plugin add golang https://github.com/asdf-community/asdf-golang.git
     asdf plugin-add elixir https://github.com/asdf-vm/asdf-elixir.git
+    asdf plugin-add gleam https://github.com/asdf-community/asdf-gleam.git
 }
 
 function use_latest() {
     asdf install nodejs latest
     asdf install golang latest
     asdf install elixir latest
+    asdf install gleam latest
     
     asdf global nodejs latest
     asdf global golang latest
     asdf global elixir latest
+    asdf global gleam latest
 }
 
 function main() {
