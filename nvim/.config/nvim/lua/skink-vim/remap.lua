@@ -25,3 +25,7 @@ vim.keymap.set("n", "<", "[")
 vim.keymap.set("n", ">", "]")
 
 
+-- Stop copilot from taking tab
+vim.g.copilot_no_tab_map = true
+
+
