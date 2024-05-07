@@ -7,4 +7,7 @@ require('gitsigns').setup {
     }
 }
 
-vim.cmd [[ highlight link GitSignsCurrentLineBlame Comment ]]
+vim.cmd [[
+hi clear GitSignsCurrentLineBlame
+highlight link GitSignsCurrentLineBlame Comment
+]]
