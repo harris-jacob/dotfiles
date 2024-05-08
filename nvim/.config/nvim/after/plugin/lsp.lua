@@ -80,6 +80,7 @@ lsp.on_attach(function(client, bufnr)
     vim.keymap.set('n', 'gtd', telescope.lsp_type_definitions, utils.with_desc(opts, 'Telescope: Show Type Definitions'))
     vim.keymap.set('n', 'gr', telescope.lsp_references, utils.with_desc(opts, 'Telescope: Show References'))
     vim.keymap.set("n", "K", vim.lsp.buf.hover, utils.with_desc(opts, "LSP: View hover info"))
+    vim.keymap.set("n", "gK", vim.lsp.buf.hover, utils.with_desc(opts, "LSP: View hover info"))
     vim.keymap.set("n", "<leader>fws", vim.lsp.buf.workspace_symbol, utils.with_desc(opts, "LSP: Find workspace symbol"))
 
     -- Diagnostics
@@ -89,7 +90,9 @@ lsp.on_attach(function(client, bufnr)
     -- Code actions
     vim.keymap.set("n", "<leader>ca", vim.lsp.buf.code_action, utils.with_desc(opts, "LSP: Code actions"))
     vim.keymap.set("n", "<leader>cf", vim.lsp.buf.format, opts, utils.with_desc(opts, "LSP: Format buffer"))
-    vim.keymap.set("n", "<leader>cR", vim.lsp.buf.rename, opts, utils.with_desc(opts, "LSP: Rename symbol"))
+    vim.keymap.set("n", "<leader>cr", vim.lsp.buf.rename, opts, utils.with_desc(opts, "LSP: Rename symbol"))
+    vim.keymap.set("n", "<leader>cc", vim.lsp.codelens.run, opts, utils.with_desc(opts, "LSP: Codelens run"))
+    vim.keymap.set("n", "<leader>cc", vim.lsp.codelens.refresh, opts, utils.with_desc(opts, "LSP: Codelens refresh"))
 
 
     local keybindings = custom_keymaps[client.name]
