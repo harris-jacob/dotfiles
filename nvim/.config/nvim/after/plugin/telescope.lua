@@ -11,9 +11,8 @@ vim.keymap.set('n', '<leader>fk', builtin.keymaps, {desc = 'Telescope: Show Keym
 vim.keymap.set('n', '<leader>fll', builtin.loclist, {desc = 'Telescope: Show Location List for buffer'})
 
 -- LSP Pickers
+-- Other LSP pickers set directly in lsp config
 vim.keymap.set('n', '<leader>cd', builtin.diagnostics, {desc = 'Telescope: Show Diagnostics'})
-vim.keymap.set('n', '<leader>gi', builtin.lsp_implementations, {desc = 'Telescope: Show LSP Implementations'})
-vim.keymap.set('n', '<leader>gd', builtin.lsp_definitions, {desc = 'Telescope: Show LSP Definitions'})
 
 -- Git Pickers
 vim.keymap.set('n', '<leader>gc', builtin.git_commits, {desc = 'Telescope: Show Git Commits'})
