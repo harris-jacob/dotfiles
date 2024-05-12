@@ -29,21 +29,8 @@ return require('packer').startup(function(use)
     use('nvim-treesitter/nvim-treesitter', { run = ':TSUpdate' })
 
     -- Themes
-    -- use({
-    --     'rose-pine/neovim',
-    --     as = 'rose-pine',
-    -- })
-
-    -- use('folke/tokyonight.nvim')
-
-    -- use({
-    --     'sainnhe/everforest',
-    --     config = function()
-    --         vim.cmd('colorscheme everforest')
-    --     end
-    -- })
-
-    use("scottmckendry/cyberdream.nvim")
+    use("scottmckendry/cyberdream.nvim", { opt = true })
+    use("catppuccin/nvim", { opt = true })
 
     -- Unimpaired
     use('tpope/vim-Unimpaired')
