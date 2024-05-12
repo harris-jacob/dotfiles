@@ -124,5 +124,7 @@ source $ZSH/oh-my-zsh.sh
 
 # shared aliases
 alias vi=nvim
-alias dots='vi ~/dev/dotfiles'
+alias dots='vi -c "cd ~/dev/dotfiles" ~/dev/dotfiles'
 alias cl=clear
+alias lm='kitten themes --reload-in=all catppuccin-latte'
+alias dm='kitten themes --reload-in=all cyberdream'

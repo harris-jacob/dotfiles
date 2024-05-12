@@ -35,6 +35,6 @@ map alt+w select_tab
 
 
 # BEGIN_KITTY_THEME
-# cyberdream
+# Catppuccin-Latte
 include current-theme.conf
 # END_KITTY_THEME

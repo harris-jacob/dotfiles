@@ -84,6 +84,7 @@ lsp.on_attach(function(client, bufnr)
     vim.keymap.set("n", "<leader>fws", vim.lsp.buf.workspace_symbol, utils.with_desc(opts, "LSP: Find workspace symbol"))
 
     -- Diagnostics
+    vim.keymap.set("n", "<leader>vd", vim.diagnostic.open_float, utils.with_desc(opts, "LSP: Open diagnostic float"))
     vim.keymap.set("n", "[d", vim.diagnostic.goto_next, utils.with_desc(opts, "LSP: Go to next diagnostic"))
     vim.keymap.set("n", "]d", vim.diagnostic.goto_prev, opts, utils.with_desc(opts, "LSP: Go to previous diagnostic"))
 
