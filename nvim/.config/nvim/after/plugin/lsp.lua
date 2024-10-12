@@ -5,9 +5,6 @@ local telescope = require('telescope.builtin')
 local utils = require('skink-vim.utils')
 
 
-lsp.preset('recommended')
-
-
 -- Custom handler overrides for specific servers
 local function lua_handler()
     require('lspconfig').lua_ls.setup({
@@ -57,9 +54,6 @@ require('mason-lspconfig').setup({
     },
 })
 
--- Setup for servers that are not installed by mason
-require('lspconfig').gleam.setup {}
-
 -- Server specific keybindings, will override default keybindings
 local custom_keymaps = {
     omnisharp = {
@@ -105,18 +99,20 @@ lsp.on_attach(function(client, bufnr)
 end)
 
 
--- Overwrite lsp zero completion keymaps
+-- Setup completion
 cmp.setup({
-    mapping = cmp.mapping.preset.insert({
-        ['<CR>'] = cmp.mapping.confirm({ select = false }),
-        ['<Tab>'] = cmp_action.luasnip_supertab(),
-        ['<S-Tab>'] = cmp_action.luasnip_shift_supertab(),
-    }),
+    sources = {
+        { name = 'nvim_lsp' },
+    },
     snippet = {
         expand = function(args)
-            require('luasnip').lsp_expand(args.body)
+            vim.snippet.expand(args.body)
         end,
-    }
+    },
+    mapping = cmp.mapping.preset.insert({
+        ['<Tab>'] = cmp.mapping.select_next_item({ behavior = cmp.SelectBehavior.Insert }),
+        ['<S-Tab>'] = cmp.mapping.select_prev_item({ behavior = cmp.SelectBehavior.Insert }),
+    }),
 })
 
 vim.diagnostic.config({
