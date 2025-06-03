@@ -128,3 +128,7 @@ alias dots='vi -c "cd ~/dev/dotfiles" ~/dev/dotfiles'
 alias cl=clear
 alias lm='kitten themes --reload-in=all catppuccin-latte'
 alias dm='kitten themes --reload-in=all cyberdream'
+
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion

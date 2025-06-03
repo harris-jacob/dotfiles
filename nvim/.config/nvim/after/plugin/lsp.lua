@@ -35,12 +35,11 @@ require('mason').setup({})
 require('mason-lspconfig').setup({
     -- servers that will be installed automatically by mason on first startup
     ensure_installed = {
-        'tsserver',
         'eslint',
         'lua_ls',
         'rust_analyzer',
-        'gopls',
-        'elixirls',
+        -- 'gopls',
+        -- 'elixirls',
         'omnisharp'
     },
 

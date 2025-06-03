@@ -70,12 +70,13 @@ return require('packer').startup(function(use)
         }
     }
 
+    use 'nvimtools/none-ls-extras.nvim'
+
     -- null ls to add additional LSP functionality
     use {
-        'jose-elias-alvarez/null-ls.nvim',
-        requires = {
-            { 'jose-elias-alvarez/typescript.nvim' },
-            { "nvim-lua/plenary.nvim" }
+        'nvimtools/none-ls.nvim',
+        dependencies = {
+            'nvimtools/none-ls-extras.nvim'
         }
     }
 
@@ -109,6 +110,11 @@ return require('packer').startup(function(use)
         requires = { 'nvim-lua/plenary.nvim' },
     }
 
+    -- typescript tools
+    use {
+        "pmizio/typescript-tools.nvim",
+        requires = { "nvim-lua/plenary.nvim", "neovim/nvim-lspconfig" },
+    }
 
     -- commentary operator
     use { 'tpope/vim-commentary' }
@@ -119,9 +125,6 @@ return require('packer').startup(function(use)
     use { 'rcarriga/nvim-dap-ui', requires = "nvim-neotest/nvim-nio" }
     use 'theHamsta/nvim-dap-virtual-text'
     use 'nvim-telescope/telescope-dap.nvim'
-
-    -- copilot
-    use 'github/copilot.vim'
 
     -- Hard time
     use 'takac/vim-hardtime'
