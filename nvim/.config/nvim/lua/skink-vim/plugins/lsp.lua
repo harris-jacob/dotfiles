@@ -7,7 +7,7 @@ local utils = require('skink-vim.utils')
 
 -- Custom handler overrides for specific servers
 local function lua_handler()
-    require('lspconfig').lua_ls.setup({
+    vim.lsp.config('lua_ls', {
         settings = {
             Lua = {
                 diagnostics = {
@@ -16,6 +16,7 @@ local function lua_handler()
             }
         }
     })
+    require('lspconfig').lua_ls.setup({})
 end
 
 local function omnisharp_handler()
@@ -23,7 +24,7 @@ local function omnisharp_handler()
         settings = {
             omnisharp = {
                 useModernNet = true,
-                enableDecompilationSupport = true, -- Enable decompilation support
+                enableDecompilationSupport = true,
                 enableMsBuildLoadProjectsOnDemand = false,
                 enableRoslynAnalyzers = true
             }
@@ -53,6 +54,8 @@ require('mason-lspconfig').setup({
     },
 })
 
+lsp.setup()
+
 -- Server specific keybindings, will override default keybindings
 local custom_keymaps = {
     omnisharp = {
@@ -68,26 +71,25 @@ lsp.on_attach(function(client, bufnr)
     local opts = { buffer = bufnr, remap = true }
 
     -- LSP Navigation/Search
-    vim.keymap.set('n', 'gd', telescope.lsp_definitions, utils.with_desc(opts, 'Telescope: Show Definitions'))
-    vim.keymap.set('n', 'gi', telescope.lsp_implementations, utils.with_desc(opts, 'Telescope: Show LSP Implementations'))
-    vim.keymap.set('n', 'gtd', telescope.lsp_type_definitions, utils.with_desc(opts, 'Telescope: Show Type Definitions'))
-    vim.keymap.set('n', 'gr', telescope.lsp_references, utils.with_desc(opts, 'Telescope: Show References'))
-    vim.keymap.set("n", "K", vim.lsp.buf.hover, utils.with_desc(opts, "LSP: View hover info"))
-    vim.keymap.set("n", "gK", vim.lsp.buf.hover, utils.with_desc(opts, "LSP: View hover info"))
+    vim.keymap.set('n', 'gd',  telescope.lsp_definitions,      utils.with_desc(opts, 'Telescope: Show Definitions'))
+    vim.keymap.set('n', 'gi',  telescope.lsp_implementations,  utils.with_desc(opts, 'Telescope: Show LSP Implementations'))
+    vim.keymap.set('n', 'gtd', telescope.lsp_type_definitions,  utils.with_desc(opts, 'Telescope: Show Type Definitions'))
+    vim.keymap.set('n', 'gr',  telescope.lsp_references,       utils.with_desc(opts, 'Telescope: Show References'))
+    vim.keymap.set("n", "K",   vim.lsp.buf.hover,              utils.with_desc(opts, "LSP: View hover info"))
+    vim.keymap.set("n", "gK",  vim.lsp.buf.hover,              utils.with_desc(opts, "LSP: View hover info"))
     vim.keymap.set("n", "<leader>fws", vim.lsp.buf.workspace_symbol, utils.with_desc(opts, "LSP: Find workspace symbol"))
 
     -- Diagnostics
-    vim.keymap.set("n", "<leader>vd", vim.diagnostic.open_float, utils.with_desc(opts, "LSP: Open diagnostic float"))
-    vim.keymap.set("n", "[d", vim.diagnostic.goto_next, utils.with_desc(opts, "LSP: Go to next diagnostic"))
-    vim.keymap.set("n", "]d", vim.diagnostic.goto_prev, opts, utils.with_desc(opts, "LSP: Go to previous diagnostic"))
+    vim.keymap.set("n", "<leader>vd", vim.diagnostic.open_float,  utils.with_desc(opts, "LSP: Open diagnostic float"))
+    vim.keymap.set("n", "[d",         vim.diagnostic.goto_next,   utils.with_desc(opts, "LSP: Go to next diagnostic"))
+    vim.keymap.set("n", "]d",         vim.diagnostic.goto_prev,   utils.with_desc(opts, "LSP: Go to previous diagnostic"))
 
     -- Code actions
     vim.keymap.set("n", "<leader>ca", vim.lsp.buf.code_action, utils.with_desc(opts, "LSP: Code actions"))
-    vim.keymap.set("n", "<leader>cf", vim.lsp.buf.format, opts, utils.with_desc(opts, "LSP: Format buffer"))
-    vim.keymap.set("n", "<leader>cr", vim.lsp.buf.rename, opts, utils.with_desc(opts, "LSP: Rename symbol"))
-    vim.keymap.set("n", "<leader>cc", vim.lsp.codelens.run, opts, utils.with_desc(opts, "LSP: Codelens run"))
-    vim.keymap.set("n", "<leader>cc", vim.lsp.codelens.refresh, opts, utils.with_desc(opts, "LSP: Codelens refresh"))
-
+    vim.keymap.set("n", "<leader>cf", vim.lsp.buf.format,      utils.with_desc(opts, "LSP: Format buffer"))
+    vim.keymap.set("n", "<leader>cr", vim.lsp.buf.rename,      utils.with_desc(opts, "LSP: Rename symbol"))
+    vim.keymap.set("n", "<leader>cc", vim.lsp.codelens.run,    utils.with_desc(opts, "LSP: Codelens run"))
+    vim.keymap.set("n", "<leader>cc", vim.lsp.codelens.refresh, utils.with_desc(opts, "LSP: Codelens refresh"))
 
     local keybindings = custom_keymaps[client.name]
     if keybindings then
@@ -109,9 +111,9 @@ cmp.setup({
         end,
     },
     mapping = cmp.mapping.preset.insert({
-        ['<Tab>'] = cmp.mapping.select_next_item({ behavior = cmp.SelectBehavior.Insert }),
+        ['<Tab>']   = cmp.mapping.select_next_item({ behavior = cmp.SelectBehavior.Insert }),
         ['<S-Tab>'] = cmp.mapping.select_prev_item({ behavior = cmp.SelectBehavior.Insert }),
-        ['<CR>'] = cmp.mapping.confirm({ select = true, behavior = cmp.ConfirmBehavior.Replace }),
+        ['<CR>']    = cmp.mapping.confirm({ select = true, behavior = cmp.ConfirmBehavior.Replace }),
     }),
 })
 

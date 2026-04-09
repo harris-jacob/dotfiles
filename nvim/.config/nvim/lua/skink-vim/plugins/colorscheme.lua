@@ -42,14 +42,21 @@ local function setup_themes(theme_name)
     end
 end
 
+local theme_to_plugin = {
+    ['cyberdream']       = 'cyberdream.nvim',
+    ['catppuccin-latte'] = 'nvim',
+}
+
 local function load_theme(theme_name)
-    local status_ok, _ = pcall(vim.cmd, 'packadd ' .. theme_name)
-    if not status_ok then
-        print('Error loading ' .. theme_name)
-        return
+    local plugin_name = theme_to_plugin[theme_name]
+    if plugin_name then
+        require('lazy').load({ plugins = { plugin_name } })
     end
     setup_themes(theme_name)
-    vim.cmd('colorscheme ' .. theme_name)
+    local ok, err = pcall(vim.cmd, 'colorscheme ' .. theme_name)
+    if not ok then
+        print('Error setting colorscheme ' .. theme_name .. ': ' .. err)
+    end
 end
 
 local function is_kitty_term()
@@ -89,7 +96,7 @@ end
 
 local function on_change(err, _, _)
     if err then
-        print('Error setting theme watcher:', err) -- Handle possible errors
+        print('Error setting theme watcher:', err)
     else
         -- kitty takes a while to 'reload' the terminal so this just attempts
         -- to synchronize the change a little, otherwise the vim colors change
@@ -98,8 +105,11 @@ local function on_change(err, _, _)
     end
 end
 
-
-set_theme_from_kitty()
+if is_kitty_term() then
+    set_theme_from_kitty()
+else
+    load_theme(_G.theme_state.current_theme)
+end
 
 vim.keymap.set('n', '<F6>', toggle_theme, {})
 utils.watch_directory(vim.fn.expand('~/.config/kitty'), 'current-theme.conf', on_change)
