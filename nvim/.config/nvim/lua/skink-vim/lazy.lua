@@ -52,12 +52,6 @@ require('lazy').setup({
         end,
     },
 
-    -- Harpoon for file hopping
-    {
-        'ThePrimeagen/harpoon',
-        config = function() require('skink-vim.plugins.harpoon') end,
-    },
-
     -- Treesitter for syntax highlighting (branch = 'master' required for nvim < 0.11)
     {
         'nvim-treesitter/nvim-treesitter',
@@ -124,18 +118,10 @@ require('lazy').setup({
         config = function() require('skink-vim.plugins.lsp') end,
     },
 
-    -- none-ls for extra formatters/linters
-    { 'nvimtools/none-ls-extras.nvim' },
+    -- none-ls for prettier formatting
     {
         'nvimtools/none-ls.nvim',
-        dependencies = { 'nvimtools/none-ls-extras.nvim' },
         config = function() require('skink-vim.plugins.none-ls') end,
-    },
-
-    -- Like make but determines build system from file
-    {
-        'neomake/neomake',
-        config = function() require('skink-vim.plugins.neomake') end,
     },
 
     -- Autopairs
@@ -178,9 +164,6 @@ require('lazy').setup({
         dependencies = { 'nvim-lua/plenary.nvim', 'neovim/nvim-lspconfig' },
         config = function() require('skink-vim.plugins.typescript-tools') end,
     },
-
-    -- Commentary operator
-    { 'tpope/vim-commentary' },
 
     -- Debugger
     {

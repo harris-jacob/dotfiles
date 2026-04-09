@@ -89,7 +89,6 @@ lsp.on_attach(function(client, bufnr)
     vim.keymap.set("n", "<leader>cf", vim.lsp.buf.format,      utils.with_desc(opts, "LSP: Format buffer"))
     vim.keymap.set("n", "<leader>cr", vim.lsp.buf.rename,      utils.with_desc(opts, "LSP: Rename symbol"))
     vim.keymap.set("n", "<leader>cc", vim.lsp.codelens.run,    utils.with_desc(opts, "LSP: Codelens run"))
-    vim.keymap.set("n", "<leader>cc", vim.lsp.codelens.refresh, utils.with_desc(opts, "LSP: Codelens refresh"))
 
     local keybindings = custom_keymaps[client.name]
     if keybindings then
