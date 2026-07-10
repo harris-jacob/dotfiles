@@ -26,6 +26,7 @@ vim.fn.sign_define("DapBreakpointRejected", dap_breakpoint.rejected)
 require("nvim-dap-virtual-text").setup()
 require('dap-go').setup()
 require("dapui").setup()
+require('telescope').load_extension('dap')
 
 local dap, dapui = require("dap"), require("dapui")
 dap.listeners.after.event_initialized["dapui_config"] = function()

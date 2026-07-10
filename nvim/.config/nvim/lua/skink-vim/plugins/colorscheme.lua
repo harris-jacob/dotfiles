@@ -112,4 +112,6 @@ else
 end
 
 vim.keymap.set('n', '<F6>', toggle_theme, {})
-utils.watch_directory(vim.fn.expand('~/.config/kitty'), 'current-theme.conf', on_change)
+if is_kitty_term() then
+    utils.watch_directory(vim.fn.expand('~/.config/kitty'), 'current-theme.conf', on_change)
+end

@@ -65,8 +65,8 @@ vim.api.nvim_create_autocmd('LspAttach', {
 
         -- Diagnostics
         vim.keymap.set('n', '<leader>vd', vim.diagnostic.open_float, utils.with_desc(opts, 'LSP: Open diagnostic float'))
-        vim.keymap.set('n', '[d',         vim.diagnostic.goto_next,  utils.with_desc(opts, 'LSP: Go to next diagnostic'))
-        vim.keymap.set('n', ']d',         vim.diagnostic.goto_prev,  utils.with_desc(opts, 'LSP: Go to previous diagnostic'))
+        vim.keymap.set('n', '[d',         vim.diagnostic.goto_prev,  utils.with_desc(opts, 'LSP: Go to previous diagnostic'))
+        vim.keymap.set('n', ']d',         vim.diagnostic.goto_next,  utils.with_desc(opts, 'LSP: Go to next diagnostic'))
 
         -- Code actions
         vim.keymap.set('n', '<leader>ca', vim.lsp.buf.code_action, utils.with_desc(opts, 'LSP: Code actions'))

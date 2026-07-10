@@ -2,7 +2,7 @@
 vim.g.mapleader = " "
 
 local lazypath = vim.fn.stdpath('data') .. '/lazy/lazy.nvim'
-if not vim.loop.fs_stat(lazypath) then
+if not vim.uv.fs_stat(lazypath) then
     vim.fn.system({
         'git', 'clone', '--filter=blob:none',
         'https://github.com/folke/lazy.nvim.git',
@@ -33,9 +33,9 @@ require('lazy').setup({
             vim.keymap.set('n', '<leader>cd', builtin.diagnostics,  { desc = 'Telescope: Show Diagnostics' })
 
             -- Git pickers
-            vim.keymap.set('n', '<leader>gc',  builtin.git_commits, { desc = 'Telescope: Show Git Commits' })
-            vim.keymap.set('n', '<leader>gbc', builtin.git_commits, { desc = 'Telescope: Show Git Branch Commits' })
-            vim.keymap.set('n', '<leader>gs',  builtin.git_commits, { desc = 'Telescope: Show Git Status' })
+            vim.keymap.set('n', '<leader>gc',  builtin.git_commits,  { desc = 'Telescope: Show Git Commits' })
+            vim.keymap.set('n', '<leader>gbc', builtin.git_bcommits, { desc = 'Telescope: Show Git Branch Commits' })
+            vim.keymap.set('n', '<leader>gs',  builtin.git_status,   { desc = 'Telescope: Show Git Status' })
 
             require('telescope').setup({
                 defaults = {
@@ -65,7 +65,7 @@ require('lazy').setup({
                 pattern = '*',
                 callback = function(ev)
                     if vim.bo[ev.buf].filetype ~= 'make' then
-                        pcall(vim.treesitter.start)
+                        pcall(vim.treesitter.start, ev.buf)
                     end
                 end,
             })
@@ -109,10 +109,7 @@ require('lazy').setup({
         dependencies = {
             'hrsh7th/cmp-buffer',
             'hrsh7th/cmp-path',
-            'saadparwaiz1/cmp_luasnip',
             'hrsh7th/cmp-nvim-lsp',
-            'L3MON4D3/LuaSnip',
-            'rafamadriz/friendly-snippets',
         },
         config = function() require('skink-vim.plugins.cmp') end,
     },
@@ -177,7 +174,12 @@ require('lazy').setup({
     },
 
     -- Hard time (forces better vim habits)
-    { 'takac/vim-hardtime' },
+    {
+        'takac/vim-hardtime',
+        config = function()
+            vim.g.hardtime_enabled = 1
+        end,
+    },
 
     -- Extended omnisharp support
     { 'Hoffs/omnisharp-extended-lsp.nvim' },

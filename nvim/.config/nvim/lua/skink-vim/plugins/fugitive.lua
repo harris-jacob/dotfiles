@@ -1,1 +1,1 @@
--- vim.keymap.set('n', '<leader>gs', vim.cmd.Git, { desc = 'Run Git' })
+vim.keymap.set('n', '<leader>gg', vim.cmd.Git, { desc = 'Fugitive: Open Git' })
