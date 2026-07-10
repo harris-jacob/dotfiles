@@ -140,6 +140,20 @@ require('lazy').setup({
         config = function() require('skink-vim.plugins.lualine') end,
     },
 
+    -- Markdown rendering
+    {
+        'MeanderingProgrammer/render-markdown.nvim',
+        ft = { 'markdown' },
+        config = function() require('skink-vim.plugins.render-markdown') end,
+    },
+
+    -- File explorer
+    {
+        'stevearc/oil.nvim',
+        dependencies = { 'nvim-tree/nvim-web-devicons' },
+        config = function() require('skink-vim.plugins.oil') end,
+    },
+
     -- Todos
     {
         'folke/todo-comments.nvim',
