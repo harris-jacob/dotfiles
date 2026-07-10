@@ -1,5 +1,5 @@
-if vim.fn.has('nvim-0.7') == 0 then
-    error('Neovim 0.7+ is required to run skink-vim!')
+if vim.fn.has('nvim-0.12') == 0 then
+    error('Neovim 0.12+ is required to run skink-vim!')
 end
 
 local ok, err = pcall(require, 'skink-vim')

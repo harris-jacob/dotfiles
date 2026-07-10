@@ -52,23 +52,23 @@ require('lazy').setup({
         end,
     },
 
-    -- Treesitter for syntax highlighting (branch = 'master' required for nvim < 0.11)
+    -- Treesitter for syntax highlighting (nvim 0.12+, main branch)
     {
         'nvim-treesitter/nvim-treesitter',
         build = ':TSUpdate',
-        branch = 'master',
         lazy = false,
         config = function()
-            require('nvim-treesitter.configs').setup {
-                ensure_installed = { "c", "lua", "rust", "typescript", "go", "javascript", "elixir" },
-                sync_install = false,
-                auto_install = true,
-                highlight = {
-                    enable = true,
-                    disable = { "make" },
-                    additional_vim_regex_highlighting = false,
-                },
-            }
+            require('nvim-treesitter').setup {}
+
+            -- Enable treesitter highlighting for all filetypes except make
+            vim.api.nvim_create_autocmd('FileType', {
+                pattern = '*',
+                callback = function(ev)
+                    if vim.bo[ev.buf].filetype ~= 'make' then
+                        pcall(vim.treesitter.start)
+                    end
+                end,
+            })
         end,
     },
 
@@ -94,28 +94,27 @@ require('lazy').setup({
         config = function() require('skink-vim.plugins.fugitive') end,
     },
 
-    -- LSP config
+    -- Mason: installs LSP server binaries, adds them to PATH
     {
-        'VonHeikemen/lsp-zero.nvim',
-        dependencies = {
-            -- LSP Support
-            'neovim/nvim-lspconfig',
-            'williamboman/mason.nvim',
-            'williamboman/mason-lspconfig.nvim',
+        'williamboman/mason.nvim',
+        config = function() require('skink-vim.plugins.lsp') end,
+    },
 
-            -- Autocompletion
-            'hrsh7th/nvim-cmp',
+    -- nvim-lspconfig: data source only (ships lsp/*.lua configs for 300+ servers)
+    { 'neovim/nvim-lspconfig' },
+
+    -- Completion
+    {
+        'hrsh7th/nvim-cmp',
+        dependencies = {
             'hrsh7th/cmp-buffer',
             'hrsh7th/cmp-path',
             'saadparwaiz1/cmp_luasnip',
             'hrsh7th/cmp-nvim-lsp',
-            'hrsh7th/cmp-nvim-lua',
-
-            -- Snippets
             'L3MON4D3/LuaSnip',
             'rafamadriz/friendly-snippets',
         },
-        config = function() require('skink-vim.plugins.lsp') end,
+        config = function() require('skink-vim.plugins.cmp') end,
     },
 
     -- none-ls for prettier formatting
