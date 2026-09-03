@@ -13,6 +13,7 @@ local servers_to_install = {
     'gopls',
     'elixir-ls',
     'omnisharp',
+    'json-lsp',
 }
 registry.refresh(function()
     for _, name in ipairs(servers_to_install) do
@@ -46,7 +47,7 @@ vim.lsp.config('omnisharp', {
 })
 
 -- Enable servers (registers FileType autocmd; server starts when matching file opens)
-vim.lsp.enable({ 'eslint', 'lua_ls', 'rust_analyzer', 'gopls', 'elixirls', 'omnisharp' })
+vim.lsp.enable({ 'eslint', 'lua_ls', 'rust_analyzer', 'gopls', 'elixirls', 'omnisharp', 'jsonls' })
 
 -- Keymaps on attach
 vim.api.nvim_create_autocmd('LspAttach', {
@@ -88,3 +89,15 @@ vim.api.nvim_create_autocmd('LspAttach', {
 vim.diagnostic.config({
     virtual_text = true,
 })
+
+vim.api.nvim_create_user_command('LspInfo', function()
+    local clients = vim.lsp.get_clients({ bufnr = 0 })
+    if #clients == 0 then
+        print("No LSP clients attached to this buffer")
+        return
+    end
+    print("LSP clients attached to this buffer:")
+    for _, client in ipairs(clients) do
+        print("  - " .. client.name .. " (id: " .. client.id .. ")")
+    end
+end, { desc = "Show LSP clients attached to current buffer" })

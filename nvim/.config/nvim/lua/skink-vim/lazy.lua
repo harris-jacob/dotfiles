@@ -94,6 +94,12 @@ require('lazy').setup({
         config = function() require('skink-vim.plugins.fugitive') end,
     },
 
+    {
+        'sindrets/diffview.nvim',
+        dependencies = { 'nvim-lua/plenary.nvim' },
+        config = function() require('skink-vim.plugins.diffview') end,
+    },
+
     -- Mason: installs LSP server binaries, adds them to PATH
     {
         'williamboman/mason.nvim',
@@ -150,6 +156,7 @@ require('lazy').setup({
     -- File explorer
     {
         'stevearc/oil.nvim',
+        lazy = false,
         dependencies = { 'nvim-tree/nvim-web-devicons' },
         config = function() require('skink-vim.plugins.oil') end,
     },
