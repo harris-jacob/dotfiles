@@ -1,5 +1,4 @@
 vim.g.mapleader = " "
-vim.keymap.set("n", "<leader>pv", vim.cmd.Ex)
 
 vim.keymap.set("i", "jk", "<Esc>")
 
@@ -23,9 +22,4 @@ vim.keymap.set("n", "<leader>x", "<cmd>!chmod +x %<CR>", { silent = true })
 -- Remap for unimpaired
 vim.keymap.set("n", "<", "[")
 vim.keymap.set("n", ">", "]")
-
-
--- Stop copilot from taking tab
-vim.g.copilot_no_tab_map = true
-
 

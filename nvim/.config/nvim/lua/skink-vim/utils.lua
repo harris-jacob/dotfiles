@@ -1,4 +1,4 @@
-local uv = vim.loop
+local uv = vim.uv
 local M = {}
 
 
@@ -36,10 +36,10 @@ end
 
 function M.async_system(cmd)
     local handle
-    local stdout = vim.loop.new_pipe(false)
-    local stderr = vim.loop.new_pipe(false)
+    local stdout = vim.uv.new_pipe(false)
+    local stderr = vim.uv.new_pipe(false)
 
-    handle, _ = vim.loop.spawn('sh', {
+    handle, _ = vim.uv.spawn('sh', {
         args = { '-c', cmd },
         stdio = { nil, stdout, stderr }
     }, vim.schedule_wrap(function()

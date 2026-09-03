@@ -3,4 +3,4 @@
 set -o errexit
 
 brew install --cask font-fira-mono-nerd-font
-brew install ripgrep fzf
+brew install ripgrep fzf tree-sitter-cli
