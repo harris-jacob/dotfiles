@@ -4,12 +4,32 @@ set -o errexit  # abort on nonzero exitstatus
 set -o nounset  # abort on unbound variable
 set -o pipefail # don't hide errors within pipes
 
-ASDF_ROOT="${HOME}/.asdf"
-ASDF_BIN="${ASDF_ROOT}/asdf.sh"
+ASDF_BIN_DIR="${HOME}/.local/bin"
+PLATFORM="$(uname | tr '[:upper:]' '[:lower:]')"
 
+# asdf >=0.16 is a single Go binary — there is no more asdf.sh to git-clone
+# and source, so install it via the right method per platform instead.
 function install_asdf() {
-    if [[ ! -d "${ASDF_ROOT}" ]]; then
-        git clone https://github.com/asdf-vm/asdf.git "${ASDF_ROOT}"
+    if command -v asdf >/dev/null 2>&1; then
+        return
+    fi
+
+    if [[ "${PLATFORM}" == "darwin" ]]; then
+        brew install asdf
+    else
+        local arch tag
+        case "$(uname -m)" in
+        x86_64) arch="amd64" ;;
+        aarch64 | arm64) arch="arm64" ;;
+        *)
+            echo "install_asdf: unsupported architecture $(uname -m)" >&2
+            exit 1
+            ;;
+        esac
+        tag=$(curl -fsSL https://api.github.com/repos/asdf-vm/asdf/releases/latest | grep '"tag_name"' | cut -d '"' -f 4)
+        mkdir -p "${ASDF_BIN_DIR}"
+        curl -fsSL "https://github.com/asdf-vm/asdf/releases/download/${tag}/asdf-${tag}-linux-${arch}.tar.gz" |
+            tar -xz -C "${ASDF_BIN_DIR}"
     fi
 }
 
@@ -18,26 +38,44 @@ function install_rust() {
 }
 
 function source_asdf() {
-    . "${ASDF_BIN}"
+    export PATH="${ASDF_BIN_DIR}:${PATH}"
+    if ! command -v asdf >/dev/null 2>&1; then
+        echo "source_asdf: asdf not found on PATH after install" >&2
+        exit 1
+    fi
 }
 
 function add_plugins() {
     asdf plugin add nodejs https://github.com/asdf-vm/asdf-nodejs.git
     asdf plugin add golang https://github.com/asdf-community/asdf-golang.git
-    asdf plugin-add elixir https://github.com/asdf-vm/asdf-elixir.git
-    asdf plugin-add gleam https://github.com/asdf-community/asdf-gleam.git
+    asdf plugin add elixir https://github.com/asdf-vm/asdf-elixir.git
+    asdf plugin add gleam https://github.com/asdf-community/asdf-gleam.git
+}
+
+# asdf-elixir resolves "latest" by shelling out to `asdf current erlang` to
+# pick a build matching the installed OTP. We install Erlang via the system
+# package manager rather than as an asdf plugin (see deps target), so that
+# lookup always comes back empty and corrupts the resolved version (e.g.
+# "1.20.4-otp-such"), which then 404s against Hex. Resolve the latest plain
+# (no -otp suffix) release ourselves instead.
+function latest_elixir_version() {
+    asdf list all elixir | tr -s ' \n' '\n' | grep -Ev '^0|^main$|^master$|otp|rc|^$' | tail -n 1
 }
 
 function use_latest() {
+    local elixir_version
+    elixir_version="$(latest_elixir_version)"
+
     asdf install nodejs latest
     asdf install golang latest
-    asdf install elixir latest
+    asdf install elixir "${elixir_version}"
     asdf install gleam latest
-    
-    asdf global nodejs latest
-    asdf global golang latest
-    asdf global elixir latest
-    asdf global gleam latest
+
+    # asdf >=0.16 dropped `asdf global`/`asdf local` in favor of `asdf set`.
+    asdf set --home nodejs latest
+    asdf set --home golang latest
+    asdf set --home elixir "${elixir_version}"
+    asdf set --home gleam latest
 }
 
 function main() {

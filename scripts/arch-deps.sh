@@ -18,4 +18,5 @@ pacman -S --noconfirm \
     unzip \
     ttf-firacode-nerd \
     fzf \
-    ripgrep
+    ripgrep \
+    erlang

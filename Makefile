@@ -7,6 +7,12 @@ DOTFILES_DIR ?= $(HOME)/dev/dotfiles
 XDG_CONFIG_HOME ?= $(HOME)/.config
 PLATFORM ?= $(shell uname | tr '[:upper:]' '[:lower:]')
 
+# A fresh Homebrew install only lands on PATH in a *new* shell session (via
+# ~/.zprofile), not within this make run, so later targets (deps, stow, ...)
+# would still fail to find `brew` right after installing it. Prepend both
+# possible install locations so every recipe in this run can see it.
+export PATH := /opt/homebrew/bin:/usr/local/bin:$(PATH)
+
 all: homebrew deps stow zsh kitty nvim i3 languages
 
 stow: 
@@ -20,7 +26,7 @@ endif
 homebrew:
 ifeq ($(PLATFORM), darwin)
 	@echo "Installing Homebrew..."
-	@/bin/bash -c NON_INTERACTIVE=1 "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+	@command -v brew >/dev/null 2>&1 || NONINTERACTIVE=1 /bin/bash -c "$$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 endif
 
 deps:
@@ -71,7 +77,7 @@ configure-nvim:
 
 install-kitty:
 	@echo "Installing kitty..."
-	@/bin/bash -c "$(curl -L https://sw.kovidgoyal.net/kitty/installer.sh | sh /dev/stdin)"
+	@curl -L https://sw.kovidgoyal.net/kitty/installer.sh | sh /dev/stdin
 
 configure-kitty:
 	@echo "Configuring kitty..."
