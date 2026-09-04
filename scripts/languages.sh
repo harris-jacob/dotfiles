@@ -26,7 +26,17 @@ function install_asdf() {
             exit 1
             ;;
         esac
-        tag=$(curl -fsSL https://api.github.com/repos/asdf-vm/asdf/releases/latest | grep '"tag_name"' | cut -d '"' -f 4)
+        # Resolve the latest tag via the releases-latest redirect rather than
+        # api.github.com: the API's anonymous rate limit (60 req/hour per
+        # source IP) is shared across every GitHub-hosted runner on the
+        # planet and gets exhausted constantly, which was silently producing
+        # an empty ${tag} here and a 404 on the download below.
+        tag=$(curl -fsSL -o /dev/null -w '%{url_effective}' https://github.com/asdf-vm/asdf/releases/latest)
+        tag="${tag##*/}"
+        if [[ -z "${tag}" ]]; then
+            echo "install_asdf: failed to resolve latest asdf release tag" >&2
+            exit 1
+        fi
         mkdir -p "${ASDF_BIN_DIR}"
         curl -fsSL "https://github.com/asdf-vm/asdf/releases/download/${tag}/asdf-${tag}-linux-${arch}.tar.gz" |
             tar -xz -C "${ASDF_BIN_DIR}"
